@@ -84,33 +84,46 @@
     </form>
   </div>
 
-  <script>
-    const form = document.getElementById("submitForm");
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const data = {
-        authToken: form.querySelector('[name="authToken"]').value,
-        projectId: form.querySelector('[name="projectId"]').value,
-        clusterUrl: form.querySelector('[name="clusterUrl"]').value
-      };
+<script>
+  const form = document.getElementById("submitForm");
 
-      try {
-        const response = await fetch("https://script.google.com/a/macros/squirro.com/s/AKfycbwgPWlTdY3QZUvKXcvaziiVw35vZwhaGCtsEDZvrD3LDw6QcK1885rxgVJSSZ1VdA_L8w/exec", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data)
-        });
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-        if (response.ok) {
-          document.getElementById("status").innerText = "✅ Submission successful!";
-          form.reset();
-        } else {
-          document.getElementById("status").innerText = "❌ Error submitting.";
-        }
-      } catch (err) {
-        document.getElementById("status").innerText = "❌ Network error.";
+    const tokenEl = form.querySelector('[name="authToken"]');
+    const projectEl = form.querySelector('[name="projectId"]');
+    const clusterEl = form.querySelector('[name="clusterUrl"]');
+
+    if (!tokenEl || !projectEl || !clusterEl) {
+      console.error("❌ One or more input fields not found!");
+      return;
+    }
+
+    const data = {
+      authToken: tokenEl.value,
+      projectId: projectEl.value,
+      clusterUrl: clusterEl.value
+    };
+
+    console.log("✅ Sending data:", data);
+
+    try {
+      const response = await fetch("https://script.google.com/a/macros/squirro.com/s/AKfycbwgPWlTdY3QZUvKXcvaziiVw35vZwhaGCtsEDZvrD3LDw6QcK1885rxgVJSSZ1VdA_L8w/exec", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      if (response.ok) {
+        document.getElementById("status").innerText = "✅ Submission successful!";
+        form.reset();
+      } else {
+        document.getElementById("status").innerText = "❌ Error submitting.";
       }
-    });
-  </script>
+    } catch (err) {
+      document.getElementById("status").innerText = "❌ Network error.";
+    }
+  });
+</script>
 </body>
 </html>
