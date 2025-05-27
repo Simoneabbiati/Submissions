@@ -70,6 +70,9 @@
 <body>
   <div class="form-container">
     <form id="submitForm">
+      <label>Name:</label>
+      <input type="text" name="userName" required />
+      
       <label>Authentication Token:</label>
       <input type="text" name="authToken" required />
 
@@ -90,16 +93,18 @@
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    const nameEl = form.querySelector('[name="userName"]');
     const tokenEl = form.querySelector('[name="authToken"]');
     const projectEl = form.querySelector('[name="projectId"]');
     const clusterEl = form.querySelector('[name="clusterUrl"]');
 
-    if (!tokenEl || !projectEl || !clusterEl) {
+    if (!nameEl || !tokenEl || !projectEl || !clusterEl) {
       console.error("❌ One or more input fields not found!");
       return;
     }
 
     const data = {
+      userName: nameEl.value,
       authToken: tokenEl.value,
       projectId: projectEl.value,
       clusterUrl: clusterEl.value
